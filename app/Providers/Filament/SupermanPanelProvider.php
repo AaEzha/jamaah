@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
+use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -39,7 +41,10 @@ class SupermanPanelProvider extends PanelProvider
             ->widgets([
                 Widgets\AccountWidget::class,
                 Widgets\FilamentInfoWidget::class,
-            ])
+            ])->plugin(FilamentSocialitePlugin::make()->providers([
+                Provider::make("google")
+                    ->label("google")
+            ])->slug('superman')->registration(true))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
