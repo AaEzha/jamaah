@@ -2,13 +2,18 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Superman\Pages\Dashboard;
+use App\Models\Jamaah;
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
+use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
+use Filament\Navigation\NavigationGroup;
+use Filament\Pages;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Widgets;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -17,23 +22,36 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 
-class SupermanPanelProvider extends PanelProvider
+class JamaahPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
         return $panel
-            ->default()
-            ->id('superman')
-            ->path('superman')
+            ->id('jamaah')
+            ->path('dashboard')
+            ->login()
             ->colors([
-                'primary' => Color::Green,
+                'primary' => Color::Red,
             ])
-            ->discoverClusters(in: app_path('Filament/Superman/clusters'), for: 'App\\Filament\\Superman\\Clusters')
-            ->discoverWidgets(in: app_path('Filament/Superman/Widgets'), for: 'App\\Filament\\Superman\\Widgets')
-            ->discoverResources(in: app_path('Filament/Superman/Resources'), for: 'App\\Filament\\Superman\\Resources')
-            ->discoverPages(in: app_path('Filament/Superman/Pages'), for: 'App\\Filament\\Superman\\Pages')
+            // ->tenant(Jamaah::class)
+            ->discoverResources(in: app_path('Filament/Jamaah/Resources'), for: 'App\\Filament\\Jamaah\\Resources')
+            ->discoverPages(in: app_path('Filament/Jamaah/Pages'), for: 'App\\Filament\\Jamaah\\Pages')
             ->pages([
-                Dashboard::class,
+                Pages\Dashboard::class,
+            ])
+            ->discoverWidgets(in: app_path('Filament/Jamaah/Widgets'), for: 'App\\Filament\\Jamaah\\Widgets')
+            ->widgets([
+                Widgets\AccountWidget::class,
+                Widgets\FilamentInfoWidget::class,
+            ])
+            ->plugin(FilamentSocialitePlugin::make()->providers([
+                Provider::make("google")
+                    ->icon('fab-google')
+                    ->label("google")
+            ])->slug('dashboard')->registration(true))
+            ->navigationGroups([
+                "Shop",
+                "Blog"
             ])
             ->middleware([
                 EncryptCookies::class,

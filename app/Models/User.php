@@ -3,9 +3,14 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Filament\Panel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
 use Laratrust\Contracts\LaratrustUser;
 use Laratrust\Traits\HasRolesAndPermissions;
 
@@ -47,4 +52,19 @@ class User extends Authenticatable implements LaratrustUser
             'password' => 'hashed',
         ];
     }
+
+    public function jamaah(): BelongsToMany
+    {
+        return $this->belongsToMany(Jamaah::class);
+    }
+
+    // public function getTenants(Panel $panel): Collection
+    // {
+    //     return $this->jamaah;
+    // }
+
+    // public function canAccessTenant(Model $tenant): bool
+    // {
+    //     return $this->teams()->whereKey($tenant)->exists();
+    // }
 }
