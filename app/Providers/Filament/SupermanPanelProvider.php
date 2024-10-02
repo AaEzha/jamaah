@@ -43,6 +43,7 @@ class SupermanPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])->plugin(FilamentSocialitePlugin::make()->providers([
                 Provider::make("google")
+                    ->icon('fab-google')
                     ->label("google")
             ])->slug('superman')->registration(true))
             ->middleware([
