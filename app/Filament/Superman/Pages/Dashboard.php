@@ -3,18 +3,12 @@
 namespace App\Filament\Superman\Pages;
 
 use App\Filament\Superman\Widgets\StatsOverview;
-use Filament\Pages\Page;
+use Filament\Pages\Dashboard as FilamentDashboard;
 
-class Dashboard extends Page
+class Dashboard extends FilamentDashboard
 {
     protected static ?string $navigationIcon = 'heroicon-o-home';
     protected static string $view = 'filament.superman.pages.dashboard';
-
-    protected int | string | array $columnSpan = 'full';
-    public function getColumns(): int | string | array
-    {
-        return 2;
-    }
 
     protected function getHeaderWidgets(): array
     {
