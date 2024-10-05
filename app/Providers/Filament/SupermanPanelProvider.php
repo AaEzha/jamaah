@@ -42,7 +42,7 @@ class SupermanPanelProvider extends PanelProvider
                 Provider::make("google")
                     ->icon('fab-google')
                     ->label("google")
-            ])->slug('dashboard'))
+            ])->slug('superman'))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
