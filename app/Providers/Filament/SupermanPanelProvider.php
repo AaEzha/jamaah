@@ -3,6 +3,8 @@
 namespace App\Providers\Filament;
 
 use App\Filament\Superman\Pages\Dashboard;
+use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
+use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
@@ -25,8 +27,9 @@ class SupermanPanelProvider extends PanelProvider
             ->default()
             ->id('superman')
             ->path('superman')
+            ->login()
             ->colors([
-                'primary' => Color::Green,
+                'primary' => Color::Orange,
             ])
             ->discoverClusters(in: app_path('Filament/Superman/clusters'), for: 'App\\Filament\\Superman\\Clusters')
             ->discoverWidgets(in: app_path('Filament/Superman/Widgets'), for: 'App\\Filament\\Superman\\Widgets')
@@ -35,6 +38,11 @@ class SupermanPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
+            ->plugin(FilamentSocialitePlugin::make()->providers([
+                Provider::make("google")
+                    ->icon('fab-google')
+                    ->label("google")
+            ])->slug('dashboard'))
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

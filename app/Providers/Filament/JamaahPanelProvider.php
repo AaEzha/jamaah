@@ -28,31 +28,24 @@ class JamaahPanelProvider extends PanelProvider
     {
         return $panel
             ->id('jamaah')
-            ->path('dashboard')
+            ->path('jamaah')
             ->login()
             ->colors([
-                'primary' => Color::Red,
+                'primary' => Color::Green,
             ])
             // ->tenant(Jamaah::class)
+            ->discoverClusters(in: app_path('Filament/Jamaah/clusters'), for: 'App\\Filament\\Jamaah\\Clusters')
             ->discoverResources(in: app_path('Filament/Jamaah/Resources'), for: 'App\\Filament\\Jamaah\\Resources')
             ->discoverPages(in: app_path('Filament/Jamaah/Pages'), for: 'App\\Filament\\Jamaah\\Pages')
+            ->discoverWidgets(in: app_path('Filament/Jamaah/Widgets'), for: 'App\\Filament\\Jamaah\\Widgets')
             ->pages([
                 Pages\Dashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Jamaah/Widgets'), for: 'App\\Filament\\Jamaah\\Widgets')
-            ->widgets([
-                Widgets\AccountWidget::class,
-                Widgets\FilamentInfoWidget::class,
             ])
             ->plugin(FilamentSocialitePlugin::make()->providers([
                 Provider::make("google")
                     ->icon('fab-google')
                     ->label("google")
             ])->slug('dashboard')->registration(true))
-            ->navigationGroups([
-                "Shop",
-                "Blog"
-            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
