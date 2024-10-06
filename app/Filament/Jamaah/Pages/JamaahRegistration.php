@@ -18,8 +18,12 @@ class JamaahRegistration extends RegisterTenant
     {
         return $form
             ->schema([
-                TextInput::make('name'),
-                TextInput::make('slug'),
+                TextInput::make('name')->required(),
+                TextInput::make('website')
+                    ->suffix('.jamaah.com')
+                    ->prefixIcon('heroicon-m-globe-alt')
+                    ->required()
+                    ->unique(table: Jamaah::class, column: "website")
             ]);
     }
 
