@@ -12,13 +12,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
-use Laratrust\Contracts\LaratrustUser;
-use Laratrust\Traits\HasRolesAndPermissions;
 
-class User extends Authenticatable implements LaratrustUser, HasTenants
+class User extends Authenticatable implements HasTenants
 {
     use HasFactory, Notifiable;
-    use HasRolesAndPermissions;
 
     /**
      * The attributes that are mass assignable.
