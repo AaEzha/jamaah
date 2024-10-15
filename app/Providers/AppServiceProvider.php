@@ -3,9 +3,11 @@
 namespace App\Providers;
 
 use App\Http\Responses\LogoutResponse;
+use App\Models\User;
 use Illuminate\Support\ServiceProvider;
 use Filament\Http\Responses\Auth\Contracts\LogoutResponse as LogoutResponseContract;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Gate;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::unguard();
+
+        Gate::before(function (User $user, string $ability) {
+            return $user->hasRole("superman") ? true : null;
+        });
     }
 }

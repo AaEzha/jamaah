@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use Althinect\FilamentSpatieRolesPermissions\Middleware\SyncSpatiePermissionsWithFilamentTenants;
 use App\Filament\Superman\Pages\Dashboard;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
@@ -31,6 +33,8 @@ class SupermanPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Orange,
             ])
+
+            // Discoveries
             ->discoverClusters(in: app_path('Filament/Superman/clusters'), for: 'App\\Filament\\Superman\\Clusters')
             ->discoverWidgets(in: app_path('Filament/Superman/Widgets'), for: 'App\\Filament\\Superman\\Widgets')
             ->discoverResources(in: app_path('Filament/Superman/Resources'), for: 'App\\Filament\\Superman\\Resources')
@@ -38,11 +42,16 @@ class SupermanPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
+
+            // Plugins
             ->plugin(FilamentSocialitePlugin::make()->providers([
                 Provider::make("google")
                     ->icon('fab-google')
                     ->label("google")
             ])->slug('superman'))
+            ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
+
+            // Middlewares
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -54,6 +63,9 @@ class SupermanPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            ->tenantMiddleware([
+                SyncSpatiePermissionsWithFilamentTenants::class,
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ]);

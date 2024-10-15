@@ -7,6 +7,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
+use Illuminate\Support\Facades\Auth;
 
 class JamaahRegistration extends RegisterTenant
 {
@@ -24,7 +25,10 @@ class JamaahRegistration extends RegisterTenant
                     ->suffix('.jamaah.com')
                     ->prefixIcon('heroicon-m-globe-alt')
                     ->required()
+                    ->alphaDash()
                     ->unique(table: Jamaah::class, column: "website"),
+
+
                 Select::make("type")->options([
                     'masjid' => 'Masjid',
                     'majelis' => 'Majelis',
@@ -32,15 +36,16 @@ class JamaahRegistration extends RegisterTenant
                     ->default('masjid')
                     ->selectablePlaceholder(false)
                     ->required()
-
             ]);
     }
 
     protected function handleRegistration(array $data): Jamaah
     {
         $jamaah = Jamaah::create($data);
-
-        $jamaah->users()->attach(auth()->user());
+        $user = Auth::user();
+        $user->assignRole('admin');
+        $jamaah->roles()->syncWithPivotValues('admin');
+        $jamaah->users()->attach($user);
 
         return $jamaah;
     }

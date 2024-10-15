@@ -12,10 +12,13 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements HasTenants
 {
-    use HasFactory, Notifiable;
+    use HasFactory, Notifiable, HasRoles;
+
+    // public $guard_name = 'api';
 
     /**
      * The attributes that are mass assignable.
@@ -51,6 +54,16 @@ class User extends Authenticatable implements HasTenants
         ];
     }
 
+    public function canAccessPanel(Panel $panel): bool
+    {
+        // Only Superman can go to Krypton 🫳🫳
+        if ($panel->getId() === 'superman') {
+            return $this->hasRole("superman");
+        }
+
+        return true;
+    }
+
     public function jamaah(): BelongsToMany
     {
         return $this->belongsToMany(Jamaah::class);
@@ -64,5 +77,12 @@ class User extends Authenticatable implements HasTenants
     public function canAccessTenant(Model $tenant): bool
     {
         return $this->jamaah()->whereKey($tenant)->exists();
+    }
+
+    protected static function booted(): void
+    {
+        // static::creating(function (User $user) {
+        //     // $user->assignRole("admin");
+        // });
     }
 }
