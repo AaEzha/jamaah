@@ -41,11 +41,12 @@ class JamaahRegistration extends RegisterTenant
 
     protected function handleRegistration(array $data): Jamaah
     {
-        $jamaah = Jamaah::create($data);
         $user = Auth::user();
-        $user->assignRole('admin');
-        $jamaah->roles()->syncWithPivotValues('admin');
+        $jamaah = Jamaah::create($data);
         $jamaah->users()->attach($user);
+
+        setPermissionsTeamId($jamaah->id);
+        $user->assignRole('admin');
 
         return $jamaah;
     }

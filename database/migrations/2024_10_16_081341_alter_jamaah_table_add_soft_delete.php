@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('jamaah', function (Blueprint $table) {
-            $table->string("type")->after("id");
+            $table->softDeletes();
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('jamaah', function (Blueprint $table) {
-            $table->dropColumn("type");
+            $table->dropColumn("deleted_at");
         });
     }
 };
