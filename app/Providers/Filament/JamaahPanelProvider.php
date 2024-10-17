@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
+use Althinect\FilamentSpatieRolesPermissions\Middleware\SyncSpatiePermissionsWithFilamentTenants;
 use App\Filament\Jamaah\Pages\Dashboard;
 use App\Filament\Jamaah\Pages\JamaahRegistration;
 use App\Models\Jamaah;
@@ -32,8 +34,12 @@ class JamaahPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Green,
             ])
+
+            // Tenant Configs
             ->tenant(Jamaah::class)
             ->tenantRegistration(JamaahRegistration::class)
+
+            // Discoveries
             ->discoverClusters(in: app_path('Filament/Jamaah/clusters'), for: 'App\\Filament\\Jamaah\\Clusters')
             ->discoverResources(in: app_path('Filament/Jamaah/Resources'), for: 'App\\Filament\\Jamaah\\Resources')
             ->discoverPages(in: app_path('Filament/Jamaah/Pages'), for: 'App\\Filament\\Jamaah\\Pages')
@@ -41,11 +47,17 @@ class JamaahPanelProvider extends PanelProvider
             ->pages([
                 Dashboard::class,
             ])
+
+            // Plugins
+            // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->plugin(FilamentSocialitePlugin::make()->providers([
                 Provider::make("google")
                     ->icon('fab-google')
                     ->label("google")
             ])->slug('jamaah')->registration(true))
+
+
+            // Middlewares
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -57,6 +69,9 @@ class JamaahPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
+            // ->tenantMiddleware([
+            //     SyncSpatiePermissionsWithFilamentTenants::class,
+            // ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ]);

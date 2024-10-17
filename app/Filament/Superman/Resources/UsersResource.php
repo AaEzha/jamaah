@@ -6,6 +6,7 @@ use App\Filament\Superman\Resources\UsersResource\Pages;
 use App\Filament\Superman\Resources\UsersResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -23,7 +24,7 @@ class UsersResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('roles')->multiple()->relationship('roles', 'name')
             ]);
     }
 

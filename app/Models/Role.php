@@ -2,9 +2,17 @@
 
 namespace App\Models;
 
-use Laratrust\Models\Role as RoleModel;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Permission\Models\Role as SpatieRoleModel;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Role extends RoleModel
+
+class Role extends SpatieRoleModel
 {
-    public $guarded = [];
+    use HasFactory;
+
+    public function jamaah(): BelongsTo
+    {
+        return $this->belongsTo(Jamaah::class);
+    }
 }
