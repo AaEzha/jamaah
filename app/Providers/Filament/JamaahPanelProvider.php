@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 use Althinect\FilamentSpatieRolesPermissions\Middleware\SyncSpatiePermissionsWithFilamentTenants;
 use App\Filament\Jamaah\Pages\Dashboard;
+use App\Filament\Jamaah\Pages\JamaahProfile;
 use App\Filament\Jamaah\Pages\JamaahRegistration;
 use App\Models\Jamaah;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
@@ -38,6 +39,7 @@ class JamaahPanelProvider extends PanelProvider
             // Tenant Configs
             ->tenant(Jamaah::class)
             ->tenantRegistration(JamaahRegistration::class)
+            ->tenantProfile(JamaahProfile::class)
 
             // Discoveries
             ->discoverClusters(in: app_path('Filament/Jamaah/clusters'), for: 'App\\Filament\\Jamaah\\Clusters')
@@ -49,7 +51,6 @@ class JamaahPanelProvider extends PanelProvider
             ])
 
             // Plugins
-            // ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
             ->plugin(FilamentSocialitePlugin::make()->providers([
                 Provider::make("google")
                     ->icon('fab-google')
@@ -69,9 +70,9 @@ class JamaahPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            // ->tenantMiddleware([
-            //     SyncSpatiePermissionsWithFilamentTenants::class,
-            // ], isPersistent: true)
+            ->tenantMiddleware([
+                SyncSpatiePermissionsWithFilamentTenants::class,
+            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ]);

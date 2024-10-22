@@ -8,6 +8,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Tenancy\RegisterTenant;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class JamaahRegistration extends RegisterTenant
 {
@@ -41,12 +42,17 @@ class JamaahRegistration extends RegisterTenant
 
     protected function handleRegistration(array $data): Jamaah
     {
-        $user = Auth::user();
-        $jamaah = Jamaah::create($data);
-        $jamaah->users()->attach($user);
 
-        setPermissionsTeamId($jamaah->id);
-        $user->assignRole('admin');
+        $jamaah = DB::transaction(function () use ($data) {
+            $user = Auth::user();
+            $jamaah = Jamaah::create($data);
+            $jamaah->users()->attach($user);
+
+            setPermissionsTeamId($jamaah->id);
+            $user->assignRole('admin');
+
+            return $jamaah;
+        });
 
         return $jamaah;
     }
