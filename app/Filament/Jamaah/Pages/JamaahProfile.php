@@ -11,8 +11,6 @@ class JamaahProfile extends EditTenantProfile
 {
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'filament.jamaah.pages.jamaah-profile';
-
     public static function getLabel(): string
     {
         return 'Jamaah profile';
@@ -29,7 +27,6 @@ class JamaahProfile extends EditTenantProfile
                     ->required()
                     ->alphaDash()
                     ->unique(table: Jamaah::class, column: "website"),
-                // ...
             ]);
     }
 }
