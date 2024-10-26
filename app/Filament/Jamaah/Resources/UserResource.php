@@ -10,14 +10,17 @@ use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
+use Filament\Notifications\Notification;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ViewColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserResource extends Resource
 {
@@ -26,8 +29,6 @@ class UserResource extends Resource
 
     public static function form(Form $form): Form
     {
-        $roles = Role::where("name", "!=", "superman")->get()->pluck("name");
-
         return $form
             ->schema([
                 Select::make("user_id")
@@ -45,8 +46,11 @@ class UserResource extends Resource
                     ->required(),
                 Select::make("role")
                     ->label("Role")
-                    ->options($roles)
-                    ->default($roles[0])
+                    ->options([
+                        'admin' => 'Admin',
+                        'staff' => 'Staff',
+                    ])
+                    ->default("admin")
                     ->selectablePlaceholder(false)
                     ->required(),
             ])
@@ -59,13 +63,26 @@ class UserResource extends Resource
             ->columns([
                 TextColumn::make('name')->sortable()->searchable(),
                 TextColumn::make('email')->searchable(),
-                ViewColumn::make('roles.name')->view("tables.columns.user-roles-column")
-            ])
-            ->filters([
-                //
+                ViewColumn::make('role')->view("tables.columns.select-role")
             ])
             ->actions([
-                Tables\Actions\DeleteAction::make(),
+                DeleteAction::make()
+                    ->before(function (DeleteAction $action, User $record) {
+                        DB::transaction(function () use ($record) {
+                            // revoke user role
+                            $record->removeRole($record->getRoleNames()[0]);
+
+                            // remove user from jamaah
+                            $tenant = Filament::getTenant();
+                            $tenant->users()->detach($record->id);
+                        });
+
+                        Notification::make()
+                            ->title('User Deleted')
+                            ->success()
+                            ->send();
+                        $action->cancel(); // use cancel otherwise user will be permanently deleted
+                    }),
             ])
             ->recordUrl(null)
             ->bulkActions([]);
