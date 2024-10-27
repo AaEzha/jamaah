@@ -18,8 +18,6 @@ class User extends Authenticatable implements HasTenants
 {
     use HasFactory, Notifiable, HasRoles;
 
-    // public $guard_name = 'api';
-
     /**
      * The attributes that are mass assignable.
      *
@@ -78,6 +76,8 @@ class User extends Authenticatable implements HasTenants
     {
         return $this->jamaah()->whereKey($tenant)->exists();
     }
+
+
 
     protected static function booted(): void
     {

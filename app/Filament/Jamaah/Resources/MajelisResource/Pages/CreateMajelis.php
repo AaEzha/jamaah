@@ -7,6 +7,7 @@ use Filament\Actions;
 use Filament\Facades\Filament;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class CreateMajelis extends CreateRecord
 {
@@ -22,21 +23,23 @@ class CreateMajelis extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $majelis = static::getModel()::create($data);
+        return DB::transaction(function () use ($data) {
 
-        // Attach Majelis to parent
-        $jamaah = Filament::getTenant();
-        $majelis->parent()->associate($jamaah)->save();
-        // End Attach Majelis to parent
+            $majelis = static::getModel()::create($data);
 
-        // Attach User to new created Majelis
-        $user = auth()->user();
-        $majelis->users()->attach($user);
-        setPermissionsTeamId($majelis->id);
-        $user->assignRole('admin');
-        // End Attach User to new created Majelis
+            // Attach Majelis to parent
+            $jamaah = Filament::getTenant();
+            $majelis->parent()->associate($jamaah)->save();
+            // End Attach Majelis to parent
 
-        return $majelis;
+            // Attach User to new created Majelis
+            $user = auth()->user();
+            $majelis->users()->attach($user);
+            $user->assignRole('admin');
+            // End Attach User to new created Majelis
+
+            return $majelis;
+        });
     }
 
     protected function getRedirectUrl(): string

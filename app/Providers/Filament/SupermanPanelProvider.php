@@ -63,9 +63,6 @@ class SupermanPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->tenantMiddleware([
-                SyncSpatiePermissionsWithFilamentTenants::class,
-            ], isPersistent: true)
             ->authMiddleware([
                 Authenticate::class,
             ]);
