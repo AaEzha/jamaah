@@ -14,19 +14,10 @@ class RoleSeeder extends Seeder
      */
     public function run(): void
     {
-        // superman will get special treatment from kripton's Gate
-        $superman = Role::create(
-            ['name' => 'superman', "guard_name" => 'web']
-        );
-        $superman->givePermissionTo(
-            Permission::where("guard_name", "web")->get()
-        );
-
         // Admin Permissions
-        $admin = Role::create(
+        Role::create(
             ['name' => 'admin', "guard_name" => 'web'],
         );
-
         // $admin->givePermissionTo(
         //     ['create jamaah', 'unpublish jamaah']
         // );

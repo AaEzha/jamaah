@@ -27,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         Model::unguard();
 
         Gate::before(function (User $user, string $ability) {
-            return $user->hasRole("superman") ? true : null;
+            return $user->is_superman ? true : null;
         });
     }
 }

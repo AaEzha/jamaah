@@ -49,17 +49,8 @@ class User extends Authenticatable implements HasTenants
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_superman' => 'boolean',
         ];
-    }
-
-    public function canAccessPanel(Panel $panel): bool
-    {
-        // Only Superman can go to Krypton 🫳🫳
-        if ($panel->getId() === 'superman') {
-            return $this->hasRole("superman");
-        }
-
-        return true;
     }
 
     public function jamaah(): BelongsToMany

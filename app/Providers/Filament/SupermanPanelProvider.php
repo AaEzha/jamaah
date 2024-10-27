@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Althinect\FilamentSpatieRolesPermissions\FilamentSpatieRolesPermissionsPlugin;
 use Althinect\FilamentSpatieRolesPermissions\Middleware\SyncSpatiePermissionsWithFilamentTenants;
 use App\Filament\Superman\Pages\Dashboard;
+use App\Http\Middleware\SupermanMiddleware;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\Http\Middleware\Authenticate;
@@ -62,6 +63,7 @@ class SupermanPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                SupermanMiddleware::class
             ])
             ->authMiddleware([
                 Authenticate::class,
