@@ -7,6 +7,7 @@ use Althinect\FilamentSpatieRolesPermissions\Middleware\SyncSpatiePermissionsWit
 use App\Filament\Jamaah\Pages\Dashboard;
 use App\Filament\Jamaah\Pages\JamaahProfile;
 use App\Filament\Jamaah\Pages\JamaahRegistration;
+use App\Http\Middleware\UserMiddleware;
 use App\Models\Jamaah;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
@@ -69,6 +70,7 @@ class JamaahPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                UserMiddleware::class
             ])
             ->tenantMiddleware([
                 SyncSpatiePermissionsWithFilamentTenants::class,

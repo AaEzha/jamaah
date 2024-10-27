@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateJamaah extends CreateRecord
 {
     protected static string $resource = JamaahResource::class;
+    protected static bool $canCreateAnother = false;
 }
