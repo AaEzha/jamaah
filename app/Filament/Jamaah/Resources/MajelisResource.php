@@ -41,8 +41,11 @@ class MajelisResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('name')
+                    ->label(__('common.name'))
+                    ->required(),
                 Forms\Components\TextInput::make('website')
+                    ->label(__('common.website'))
                     ->suffix('.jamaah.com')
                     ->prefixIcon('heroicon-m-globe-alt')
                     ->required()
@@ -57,12 +60,9 @@ class MajelisResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('website'),
-                Tables\Columns\TextColumn::make('type'),
-            ])
-            ->filters([
-                // Tables\Filters\TrashedFilter::make(),
+                Tables\Columns\TextColumn::make('name')->label(__('common.name')),
+                Tables\Columns\TextColumn::make('website')->label(__('common.website')),
+                Tables\Columns\TextColumn::make('type')->label(__('common.type')),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

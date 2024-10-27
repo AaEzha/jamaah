@@ -26,17 +26,22 @@ class JamaahResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('name')
+                    ->label(__('common.name'))
+                    ->required(),
                 Forms\Components\TextInput::make('website')
+                    ->label(__('common.website'))
                     ->suffix('.jamaah.com')
                     ->prefixIcon('heroicon-m-globe-alt')
                     ->required()
                     ->alphaDash()
                     ->unique(table: Jamaah::class, column: "website", ignoreRecord: true),
-                Forms\Components\Select::make("type")->options([
-                    'masjid' => 'Masjid',
-                    'majelis' => 'Majelis',
-                ])
+                Forms\Components\Select::make("type")
+                    ->label(__('common.type'))
+                    ->options([
+                        'masjid' => 'Masjid',
+                        'majelis' => 'Majelis',
+                    ])
                     ->selectablePlaceholder(false)
                     ->required()
 
@@ -47,12 +52,13 @@ class JamaahResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('website'),
-                Tables\Columns\TextColumn::make('type'),
+                Tables\Columns\TextColumn::make('name')->label(__('common.name')),
+                Tables\Columns\TextColumn::make('website')->label(__('common.website')),
+                Tables\Columns\TextColumn::make('type')->label(__('common.type')),
             ])
             ->filters([
                 Filters\SelectFilter::make('type')
+                    ->label(__('common.type'))
                     ->options([
                         'masjid' => 'Masjid',
                         'majelis' => 'Majelis',

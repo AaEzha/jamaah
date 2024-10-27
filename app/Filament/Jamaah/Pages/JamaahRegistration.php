@@ -14,7 +14,7 @@ class JamaahRegistration extends RegisterTenant
 {
     public static function getLabel(): string
     {
-        return 'Register Jamaah';
+        return __("common.register_jamaah");
     }
 
     public function form(Form $form): Form

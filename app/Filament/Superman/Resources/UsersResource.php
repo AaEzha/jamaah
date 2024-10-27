@@ -16,15 +16,27 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 class UsersResource extends Resource
 {
     protected static ?string $model = User::class;
-
     protected static ?string $navigationIcon = 'heroicon-o-user';
+
+    public static function getNavigationLabel(): string
+    {
+        return __('common.users');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('common.users');
+    }
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('name')
+                    ->label(__('common.name'))
+                    ->required(),
                 Forms\Components\Select::make('roles')
+                    ->label(__('common.role'))
                     ->relationship('roles', 'name')
                     ->selectablePlaceholder(false)
                     ->required()
@@ -35,9 +47,9 @@ class UsersResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
-                Tables\Columns\TextColumn::make('email'),
-                Tables\Columns\TextColumn::make('created_at')->label("Register date"),
+                Tables\Columns\TextColumn::make('name')->label(__('common.name')),
+                Tables\Columns\TextColumn::make('email')->label(__('common.email')),
+                Tables\Columns\TextColumn::make('created_at')->label(__('common.register_date')),
             ])
             ->filters([
                 //

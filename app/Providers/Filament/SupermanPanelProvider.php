@@ -45,11 +45,13 @@ class SupermanPanelProvider extends PanelProvider
             ])
 
             // Plugins
-            ->plugin(FilamentSocialitePlugin::make()->providers([
-                Provider::make("google")
-                    ->icon('fab-google')
-                    ->label("google")
-            ])->slug('superman'))
+            ->plugin(FilamentSocialitePlugin::make()
+                ->providers([
+                    Provider::make("google")
+                        ->icon('fab-google')
+                        ->label("google")
+                ])
+                ->slug('superman'))
             ->plugin(FilamentSpatieRolesPermissionsPlugin::make())
 
             // Middlewares
