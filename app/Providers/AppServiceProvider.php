@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Http\Responses\LogoutResponse;
 use App\Models\User;
+use BezhanSalleh\FilamentLanguageSwitch\LanguageSwitch;
 use Illuminate\Support\ServiceProvider;
 use Filament\Http\Responses\Auth\Contracts\LogoutResponse as LogoutResponseContract;
 use Illuminate\Database\Eloquent\Model;
@@ -28,6 +29,16 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::before(function (User $user, string $ability) {
             return $user->is_superman ? true : null;
+        });
+
+        LanguageSwitch::configureUsing(function (LanguageSwitch $switch) {
+            $switch
+                ->locales(['id', 'en'])
+                ->flags([
+                    'id' => asset('flags/id.svg'),
+                    'en' => asset('flags/en.svg'),
+                ])
+                ->visible(outsidePanels: true);
         });
     }
 }

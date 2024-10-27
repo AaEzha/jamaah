@@ -27,12 +27,22 @@ class UserResource extends Resource
     protected static ?string $model = User::class;
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationLabel(): string
+    {
+        return __('common.users');
+    }
+
+    public static function getPluralLabel(): ?string
+    {
+        return __('common.users');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Select::make("user_id")
-                    ->label("User")
+                    ->label(__('common.name'))
                     ->options(
                         User::whereNotIn('id', function ($query) {
                             $query->select('user_id')
@@ -45,7 +55,7 @@ class UserResource extends Resource
                     ->searchable()
                     ->required(),
                 Select::make("role")
-                    ->label("Role")
+                    ->label(__('common.role'))
                     ->options([
                         'admin' => 'Admin',
                         'staff' => 'Staff',
@@ -61,9 +71,16 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name')->sortable()->searchable(),
-                TextColumn::make('email')->searchable(),
-                ViewColumn::make('role')->view("tables.columns.select-role")
+                TextColumn::make('name')
+                    ->label(__('common.name'))
+                    ->sortable()
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->label(__('common.email'))
+                    ->searchable(),
+                ViewColumn::make('role')
+                    ->label(__('common.role'))
+                    ->view("tables.columns.select-role")
             ])
             ->actions([
                 DeleteAction::make()

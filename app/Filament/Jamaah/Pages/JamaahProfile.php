@@ -13,7 +13,7 @@ class JamaahProfile extends EditTenantProfile
 
     public static function getLabel(): string
     {
-        return 'Jamaah profile';
+        return __("common.jamaah_profile");
     }
 
     public function form(Form $form): Form

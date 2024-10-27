@@ -6,7 +6,7 @@ use Filament\Widgets\ChartWidget;
 
 class TransactionsChart extends ChartWidget
 {
-    protected static ?string $heading = 'Transaction Chart';
+    // protected static ?string $heading = 'Transaction Chart';
     protected int | string | array $columnSpan = 'full';
 
     protected function getData(): array
@@ -30,5 +30,10 @@ class TransactionsChart extends ChartWidget
     protected function getType(): string
     {
         return 'line';
+    }
+
+    public function getHeading(): string
+    {
+        return __("widget.transaction_chart");
     }
 }
