@@ -6,7 +6,6 @@ use App\Filament\Superman\Resources\UsersResource\Pages;
 use App\Filament\Superman\Resources\UsersResource\RelationManagers;
 use App\Models\User;
 use Filament\Forms;
-use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
@@ -24,26 +23,27 @@ class UsersResource extends Resource
     {
         return $form
             ->schema([
-                Select::make('roles')->multiple()->relationship('roles', 'name')
-            ]);
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\Select::make('roles')
+                    ->relationship('roles', 'name')
+                    ->selectablePlaceholder(false)
+                    ->required()
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('email'),
+                Tables\Columns\TextColumn::make('created_at')->label("Register date"),
             ])
             ->filters([
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteAction::make(),
             ]);
     }
 

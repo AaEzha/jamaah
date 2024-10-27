@@ -9,6 +9,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,31 +20,46 @@ class JamaahResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     protected static ?string $navigationLabel = 'Jamaah';
+    protected static ?string $pluralLabel = 'Jamaah';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                //
-            ]);
+                Forms\Components\TextInput::make('name')->required(),
+                Forms\Components\TextInput::make('website')
+                    ->suffix('.jamaah.com')
+                    ->prefixIcon('heroicon-m-globe-alt')
+                    ->required()
+                    ->alphaDash()
+                    ->unique(table: Jamaah::class, column: "website", ignoreRecord: true),
+                Forms\Components\Select::make("type")->options([
+                    'masjid' => 'Masjid',
+                    'majelis' => 'Majelis',
+                ])
+                    ->selectablePlaceholder(false)
+                    ->required()
+
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name'),
+                Tables\Columns\TextColumn::make('website'),
+                Tables\Columns\TextColumn::make('type'),
             ])
             ->filters([
-                //
+                Filters\SelectFilter::make('type')
+                    ->options([
+                        'masjid' => 'Masjid',
+                        'majelis' => 'Majelis',
+                    ])
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                Tables\Actions\DeleteAction::make(),
             ]);
     }
 

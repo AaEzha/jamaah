@@ -9,4 +9,5 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateUsers extends CreateRecord
 {
     protected static string $resource = UsersResource::class;
+    protected static bool $canCreateAnother = false;
 }
